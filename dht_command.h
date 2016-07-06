@@ -27,20 +27,20 @@ void dht_command() {
 
     switch (chk) {
         case DHTLIB_OK:
-            Serial.print("ACK ");
-            Serial.print(DHT.temperature, 1);
-            Serial.write(' ');
-            Serial.print(DHT.humidity, 1);
-            Serial.print("\r\n");
+            HomeClient.print("ACK ");
+            HomeClient.print(DHT.temperature, 1);
+            HomeClient.write(' ');
+            HomeClient.print(DHT.humidity, 1);
+            HomeClient.print("\r\n");
             break;
         case DHTLIB_ERROR_CHECKSUM:
-            Serial.print("ERR checksum_error\r\n");
+            HomeClient.print("ERR checksum_error\r\n");
             break;
         case DHTLIB_ERROR_TIMEOUT:
-            Serial.print("ERR timeout_error\r\n");
+            HomeClient.print("ERR timeout_error\r\n");
             break;
         default:
-            Serial.print("ERR unknown_error\r\n");
+            HomeClient.print("ERR unknown_error\r\n");
             break;
     }
 }

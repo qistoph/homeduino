@@ -62,7 +62,7 @@ void keypad_command(){
 
   //initializes an instance of the Keypad class
   myKeypad = new Keypad(keymap, rowPins, colPins, numRows, numCols);
-  Serial.print("ACK\r\n");
+  HomeClient.print("ACK\r\n");
 }
 
 void keypad_loop() {
@@ -71,8 +71,8 @@ void keypad_loop() {
   }
   char keypressed = myKeypad->getKey();
   if (keypressed != NO_KEY) {
-    Serial.print("KP ");
-    Serial.write(keypressed);
-    Serial.print("\r\n");
+    HomeClient.print("KP ");
+    HomeClient.write(keypressed);
+    HomeClient.print("\r\n");
   }
 }
