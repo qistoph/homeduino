@@ -1,4 +1,3 @@
-
 #include <DHTlib.h>
 
 dht DHT;
@@ -27,20 +26,20 @@ void dht_command() {
 
     switch (chk) {
         case DHTLIB_OK:
-            HomeClient.print("ACK ");
+            HomeClient.print(F("ACK "));
             HomeClient.print(DHT.temperature, 1);
             HomeClient.write(' ');
             HomeClient.print(DHT.humidity, 1);
-            HomeClient.print("\r\n");
+            HomeClient.print(F("\r\n"));
             break;
         case DHTLIB_ERROR_CHECKSUM:
-            HomeClient.print("ERR checksum_error\r\n");
+            HomeClient.print(F("ERR checksum_error\r\n"));
             break;
         case DHTLIB_ERROR_TIMEOUT:
-            HomeClient.print("ERR timeout_error\r\n");
+            HomeClient.print(F("ERR timeout_error\r\n"));
             break;
         default:
-            HomeClient.print("ERR unknown_error\r\n");
+            HomeClient.print(F("ERR unknown_error\r\n"));
             break;
     }
 }

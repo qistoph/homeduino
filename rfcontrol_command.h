@@ -70,7 +70,7 @@ void rfcontrol_command_raw(){
   int interrupt_pin = atoi(arg);
   RFControl::startReceiving(interrupt_pin);
   in_raw_mode = true;
-  HomeClient.print("ACK\r\n");
+  HomeClient.print(F("ACK\r\n"));
 }
 
 void rfcontrol_command_receive() {
@@ -82,7 +82,7 @@ void rfcontrol_command_receive() {
   interrupt_pin = atoi(arg);
   RFControl::startReceiving(interrupt_pin);
   in_raw_mode = false;
-  HomeClient.print("ACK\r\n");
+  HomeClient.print(F("ACK\r\n"));
 }
 
 
@@ -119,5 +119,5 @@ void rfcontrol_command_send() {
   }
   RFControl::sendByCompressedTimings(transmitter_pin, buckets, arg, repeats);
   in_raw_mode = false;
-  HomeClient.print("ACK\r\n");
+  HomeClient.print(F("ACK\r\n"));
 }

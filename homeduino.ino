@@ -2,6 +2,13 @@
 #include <RFControl.h>
 #include <DHTlib.h>
 
+#define NETWORK_ENABLED
+#define MAX_RECORDINGS 300 // If you're using Aruino env, set this in RFContro.h too
+
+#ifdef NETWORK_ENABLED
+#include "network.h"
+#endif
+
 void argument_error();
 
 Stream& HomeClient = Serial;
@@ -40,7 +47,11 @@ void setup() {
   sCmd.addCommand("K", keypad_command);
   #endif
   sCmd.setDefaultHandler(unrecognized);
-  HomeClient.print("ready\r\n");
+  HomeClient.print(F("ready\r\n"));
+
+  #ifdef NETWORK_ENABLED
+  network_setup();
+  #endif
 }
 
 void loop() {
@@ -52,6 +63,10 @@ void loop() {
   // handle keypad keypress
   keypad_loop();
   #endif
+
+  #ifdef NETWORK_ENABLED
+  network_loop();
+  #endif
 }
 
 void digital_read_command() {
@@ -62,9 +77,9 @@ void digital_read_command() {
     }
     int pin = atoi(arg);
     int val = digitalRead(pin);
-    HomeClient.print("ACK ");
+    HomeClient.print(F("ACK "));
     HomeClient.write('0' + val);
-    HomeClient.print("\r\n");
+    HomeClient.print(F("\r\n"));
 }
 
 void analog_read_command() {
@@ -75,9 +90,9 @@ void analog_read_command() {
     }
     int pin = atoi(arg);
     int val = analogRead(pin);
-    HomeClient.print("ACK ");
+    HomeClient.print(F("ACK "));
     HomeClient.print(val);
-    HomeClient.print("\r\n");
+    HomeClient.print(F("\r\n"));
 }
 
 void digital_write_command() {
@@ -94,7 +109,7 @@ void digital_write_command() {
     }
     int val = atoi(arg);
     digitalWrite(pin, val);
-    HomeClient.print("ACK\r\n");
+    HomeClient.print(F("ACK\r\n"));
 }
 
 void analog_write_command() {
@@ -111,7 +126,7 @@ void analog_write_command() {
     }
     int val = atoi(arg);
     analogWrite(pin, val);
-    HomeClient.print("ACK\r\n");
+    HomeClient.print(F("ACK\r\n"));
 }
 
 void pin_mode_command() {
@@ -130,7 +145,7 @@ void pin_mode_command() {
     // OUTPUT 0x1
     int mode = atoi(arg);
     pinMode(pin, mode);
-    HomeClient.print("ACK\r\n");
+    HomeClient.print(F("ACK\r\n"));
 }
 
 void ping_command() {
@@ -141,20 +156,19 @@ void ping_command() {
     HomeClient.write(' ');
     HomeClient.print(arg);
   }
-  HomeClient.print("\r\n");
+  HomeClient.print(F("\r\n"));
 }
-
 
 void reset_command() {
   RFControl::stopReceiving();
-  HomeClient.print("ready\r\n");
+  HomeClient.print(F("ready\r\n"));
 }
 
 void argument_error() {
-  HomeClient.print("ERR argument_error\r\n");
+  HomeClient.print(F("ERR argument_error\r\n"));
 }
 // This gets set as the default handler, and gets called when no other command matches.
 void unrecognized(const char *command) {
-  HomeClient.print("ERR unknown_command\r\n");
+  HomeClient.print(F("ERR unknown_command\r\n"));
 }
 
