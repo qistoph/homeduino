@@ -2,9 +2,6 @@
 #include <RFControl.h>
 #include <DHTlib.h>
 
-#define NETWORK_ENABLED
-#define MAX_RECORDINGS 300 // If you're using Aruino env, set this in RFContro.h too
-
 #ifdef NETWORK_ENABLED
 #include "network.h"
 #endif
