@@ -1,9 +1,11 @@
 [submodule "libraries/SerialCommand"]
 	path = libraries/SerialCommand
-	url = https://github.com/sweetpi/Arduino-SerialCommand.git
+	url = https://github.com/qistoph/Arduino-SerialCommand.git
+	branch = netsupport
 [submodule "libraries/RFControl"]
 	path = libraries/RFControl
-	url = https://github.com/pimatic/RFControl.git
+	url = https://github.com/qistoph/RFControl.git
+	branch = netsupport
 [submodule "arduino-mk"]
 	path = arduino-mk
 	url = https://github.com/sweetpi/Arduino-Makefile.git
