@@ -8,7 +8,7 @@
 
 void argument_error();
 
-Stream& HomeClient = Serial;
+Stream* HomeClient = &Serial;
 
 SerialCommand sCmd;
 
@@ -44,7 +44,7 @@ void setup() {
   sCmd.addCommand("K", keypad_command);
   #endif
   sCmd.setDefaultHandler(unrecognized);
-  HomeClient.print(F("ready\r\n"));
+  HomeClient->print(F("ready\r\n"));
 
   #ifdef NETWORK_ENABLED
   network_setup();
@@ -74,9 +74,9 @@ void digital_read_command() {
     }
     int pin = atoi(arg);
     int val = digitalRead(pin);
-    HomeClient.print(F("ACK "));
-    HomeClient.write('0' + val);
-    HomeClient.print(F("\r\n"));
+    HomeClient->print(F("ACK "));
+    HomeClient->write('0' + val);
+    HomeClient->print(F("\r\n"));
 }
 
 void analog_read_command() {
@@ -87,9 +87,9 @@ void analog_read_command() {
     }
     int pin = atoi(arg);
     int val = analogRead(pin);
-    HomeClient.print(F("ACK "));
-    HomeClient.print(val);
-    HomeClient.print(F("\r\n"));
+    HomeClient->print(F("ACK "));
+    HomeClient->print(val);
+    HomeClient->print(F("\r\n"));
 }
 
 void digital_write_command() {
@@ -106,7 +106,7 @@ void digital_write_command() {
     }
     int val = atoi(arg);
     digitalWrite(pin, val);
-    HomeClient.print(F("ACK\r\n"));
+    HomeClient->print(F("ACK\r\n"));
 }
 
 void analog_write_command() {
@@ -123,7 +123,7 @@ void analog_write_command() {
     }
     int val = atoi(arg);
     analogWrite(pin, val);
-    HomeClient.print(F("ACK\r\n"));
+    HomeClient->print(F("ACK\r\n"));
 }
 
 void pin_mode_command() {
@@ -142,30 +142,30 @@ void pin_mode_command() {
     // OUTPUT 0x1
     int mode = atoi(arg);
     pinMode(pin, mode);
-    HomeClient.print(F("ACK\r\n"));
+    HomeClient->print(F("ACK\r\n"));
 }
 
 void ping_command() {
   char *arg;
-  HomeClient.print("PING");
+  HomeClient->print("PING");
   arg = sCmd.next();
   if (arg != NULL) {
-    HomeClient.write(' ');
-    HomeClient.print(arg);
+    HomeClient->write(' ');
+    HomeClient->print(arg);
   }
-  HomeClient.print(F("\r\n"));
+  HomeClient->print(F("\r\n"));
 }
 
 void reset_command() {
   RFControl::stopReceiving();
-  HomeClient.print(F("ready\r\n"));
+  HomeClient->print(F("ready\r\n"));
 }
 
 void argument_error() {
-  HomeClient.print(F("ERR argument_error\r\n"));
+  HomeClient->print(F("ERR argument_error\r\n"));
 }
 // This gets set as the default handler, and gets called when no other command matches.
 void unrecognized(const char *command) {
-  HomeClient.print(F("ERR unknown_command\r\n"));
+  HomeClient->print(F("ERR unknown_command\r\n"));
 }
 

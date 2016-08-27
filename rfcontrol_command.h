@@ -11,13 +11,13 @@ bool in_raw_mode = false;
 void rfcontrol_loop() {
   if(in_raw_mode){
     if(RFControl::existNewDuration()){
-      HomeClient.print(RFControl::getLastDuration() * RFControl::getPulseLengthDivider());
-      HomeClient.print(", ");
+      HomeClient->print(RFControl::getLastDuration() * RFControl::getPulseLengthDivider());
+      HomeClient->print(", ");
       static byte line=0;
       line++;
       if(line>=16){
         line=0;
-        HomeClient.write('\n');
+        HomeClient->write('\n');
       }
     }
   }
@@ -29,16 +29,16 @@ void rfcontrol_loop() {
       unsigned int buckets[8];
       unsigned int pulse_length_divider = RFControl::getPulseLengthDivider();
       RFControl::compressTimings(buckets, timings, timings_size);
-      HomeClient.print("RF receive ");
+      HomeClient->print("RF receive ");
       for(unsigned int i=0; i < 8; i++) {
         unsigned long bucket = buckets[i] * pulse_length_divider;
-        HomeClient.print(bucket);
-        HomeClient.write(' ');
+        HomeClient->print(bucket);
+        HomeClient->write(' ');
       }
       for(unsigned int i=0; i < timings_size; i++) {
-        HomeClient.write('0' + timings[i]);
+        HomeClient->write('0' + timings[i]);
       }
-      HomeClient.print("\r\n");
+      HomeClient->print("\r\n");
       RFControl::continueReceiving();
     }
   }
@@ -70,7 +70,7 @@ void rfcontrol_command_raw(){
   int interrupt_pin = atoi(arg);
   RFControl::startReceiving(interrupt_pin);
   in_raw_mode = true;
-  HomeClient.print(F("ACK\r\n"));
+  HomeClient->print(F("ACK\r\n"));
 }
 
 void rfcontrol_command_receive() {
@@ -82,7 +82,7 @@ void rfcontrol_command_receive() {
   interrupt_pin = atoi(arg);
   RFControl::startReceiving(interrupt_pin);
   in_raw_mode = false;
-  HomeClient.print(F("ACK\r\n"));
+  HomeClient->print(F("ACK\r\n"));
 }
 
 
@@ -119,5 +119,5 @@ void rfcontrol_command_send() {
   }
   RFControl::sendByCompressedTimings(transmitter_pin, buckets, arg, repeats);
   in_raw_mode = false;
-  HomeClient.print(F("ACK\r\n"));
+  HomeClient->print(F("ACK\r\n"));
 }

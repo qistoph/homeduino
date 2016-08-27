@@ -26,20 +26,20 @@ void dht_command() {
 
     switch (chk) {
         case DHTLIB_OK:
-            HomeClient.print(F("ACK "));
-            HomeClient.print(DHT.temperature, 1);
-            HomeClient.write(' ');
-            HomeClient.print(DHT.humidity, 1);
-            HomeClient.print(F("\r\n"));
+            HomeClient->print(F("ACK "));
+            HomeClient->print(DHT.temperature, 1);
+            HomeClient->write(' ');
+            HomeClient->print(DHT.humidity, 1);
+            HomeClient->print(F("\r\n"));
             break;
         case DHTLIB_ERROR_CHECKSUM:
-            HomeClient.print(F("ERR checksum_error\r\n"));
+            HomeClient->print(F("ERR checksum_error\r\n"));
             break;
         case DHTLIB_ERROR_TIMEOUT:
-            HomeClient.print(F("ERR timeout_error\r\n"));
+            HomeClient->print(F("ERR timeout_error\r\n"));
             break;
         default:
-            HomeClient.print(F("ERR unknown_error\r\n"));
+            HomeClient->print(F("ERR unknown_error\r\n"));
             break;
     }
 }

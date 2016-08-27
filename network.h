@@ -10,7 +10,8 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
 
-extern Stream& HomeClient;
+extern Stream *HomeClient;
+extern SerialCommand sCmd;
 
 EthernetServer server(ETHERNET_PORT);
 
@@ -61,14 +62,24 @@ void updateDhcp() {
   }
 }
 
+bool connected = false;
+EthernetClient client;
 void handleClients() {
-  EthernetClient client = server.available();
-
-  if(client) {
+  if((!connected || !client.connected()) && server.available()) {
+    client = server.available();
     Serial.println(F("New ethernet client"));
-    client.print(F("ready\r\n"));
+    connected = true;
+    ////client.print(F("ready\r\n"));
 
-    HomeClient = client;
+    Serial.print("client: ");
+    Serial.println((long int)&client);
+
+    HomeClient = &client;
+    sCmd.setTarget(&client);
+
+    //while(client.available()) {
+      //Serial.print(client.read());
+    //}
   }
 }
 
